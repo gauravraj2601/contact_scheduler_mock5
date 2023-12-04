@@ -3,7 +3,7 @@ const { User_Model } = require("../model/user.model");
 
 const userRouter= express.Router();
 
-userRouter.post("/contacts", async(req,res)=>{
+userRouter.post("/addcontacts/", async(req,res)=>{
     const {name,email, phone,label,booked_slots}=req.body;
     const contact= await User_Model.findOne({email:email})
     try {
@@ -19,5 +19,12 @@ userRouter.post("/contacts", async(req,res)=>{
         res.status(400).send({"error":error.message})
     }
 })
-
+userRouter.get("/contacts", async(req,res)=>{
+    try {
+        let contacts= await User_Model.find()
+        res.status(200).send(contacts)
+    } catch (error) {
+        res.status(400).send({"error":error.message})
+    }
+})
 module.exports={userRouter}
